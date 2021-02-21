@@ -1,0 +1,41 @@
+.content-wrapper-before{
+    background-image: linear-gradient(to right, #9f78ff, #32cafe);
+    background-repeat: repeat-x;
+    min-height:60px;
+    height:auto;
+}
+
+.navbar-semi-light{
+    background-image: linear-gradient(to right, #9f78ff, #32cafe) !important;
+    background-repeat: repeat-x !important;
+}
+
+@media (max-width: 767.98px){
+    .header-navbar.navbar-with-menu .navbar-container {
+        background-image: linear-gradient(to right, #9f78ff, #32cafe) !important;
+        background-repeat: repeat-x !important;
+    }
+}
+
+.content-header-title h1, .content-header-title h2, .content-header-title h3, .content-header-title h4, .content-header-title h5 {
+    color:rgb(255, 255, 255);
+}
+
+.breadcrumb-item a{
+    color:rgb(255, 255, 255) !important;
+}
+
+.breadcrumb .breadcrumb-item.active::before
+{
+    content: "/";
+    color:rgb(255, 255, 255) !important;
+}
+
+
+.breadcrumb .breadcrumb-item.active
+{
+    color:rgb(255, 255, 255) !important;
+}
+.dtitle{
+    color:#2b345f;
+}
