@@ -89,20 +89,12 @@ INSERT INTO `product_category` (`id`, `name`, `image_path`, `created_at`) VALUES
 -- Table structure for table `product_order`
 --
 
-CREATE TABLE `product_order` (
+CREATE TABLE `Movies_favourite` (
   `id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `qty` int(11) NOT NULL,
-  `rate` decimal(11,2) NOT NULL,
+  `movies_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
   `payment_method` varchar(255) DEFAULT NULL,
-  `order_status` int(11) NOT NULL DEFAULT 10,
-  `order_date` datetime DEFAULT NULL,
-  `approved_date` datetime DEFAULT NULL,
-  `shipping_date` datetime DEFAULT NULL,
-  `delivered_date` datetime DEFAULT NULL,
-  `paid` tinyint(1) NOT NULL DEFAULT 0,
   `esewa_transaction` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

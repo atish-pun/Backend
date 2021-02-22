@@ -4,9 +4,7 @@
 
     if(isset($_REQUEST['pid']) 
         && isset($_REQUEST['otoken']) 
-        && isset($_REQUEST['uid']) 
-        && isset($_REQUEST['qty']) 
-        && isset($_REQUEST['rate'])){
+        && isset($_REQUEST['uid'])){
         $productModule = new ProductModule();
         header('Content-Type: application/json');
         echo json_encode($productModule->API_addToCart($_REQUEST));
