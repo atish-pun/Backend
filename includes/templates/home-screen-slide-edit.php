@@ -25,7 +25,7 @@
             <div class="breadcrumbs-top float-md-right">
                 <div class="breadcrumb-wrapper mr-1">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                    
                         <li class="breadcrumb-item active"><a href="?page=home-screen-slide">Home Screen Slide</a></li>
                         <li class="breadcrumb-item active"><a href="??page=home-screen-slide-edit&edit=<?php echo $productInfo["id"]; ?>">Edit Screen</a></li>
                     </ol>

@@ -113,23 +113,21 @@ class UserModule extends DBconnectionModule{
     }
 
     //API Methods
-    function API_login($data){
-        if(isset($data['email']) && isset($data['pass'])){
-            $statement = $this->connection->prepare("select id, name, email, type, address, phone, current_cart_token from `users` where email=? and password=?");
+   function API_login($data){
+        if(isset($data['emailAddress']) && isset($data['Password'])){
+            $statement = $this->connection->prepare("select id, fullName, emailAddress, Favourite_token from `account_sign` where emailAddress=? and Password=?");
             if($statement){
-                $email = $data['email']; 
-                $pass = $data['pass'];
-                $statement->bind_param("ss", $email, $pass);
+                $emailAddress = $data['emailAddress']; 
+                $Password = $data['Password'];
+                $statement->bind_param("ss", $emailAddress, $Password);
                 if($statement->execute()){
                     $statement->store_result();
-                    $statement->bind_result($id, $name, $email, $type, $address, $phone, $current_cart_token);
+                    $statement->bind_result($id, $fullName, $emailAddress, $Favourite_token);
                     $statement->fetch();
                     if($statement->num_rows > 0){
-                        if($type =="CUSTOMER"){
                             $key = AuthModule::SessionKey();
-                            return ["status" => 200, "content" => "Welcome, ".$name, "id" => $id, "email" => $email, "name" => $name, "address" => $address, "phone" => $phone, "current_cart_token" => $current_cart_token, "session" => $key];
-                        }
-                        else return ["status" => 400, "content" => "For Admin user type please use dashboard."];
+                            return ["status" => 200, "content" => "Welcome, ".$fullName, "id" => $id, "emailAddress" => $emailAddress, "fullName" => $fullName, "Favourite_token" => $Favourite_token, "session" => $key];
+                       
                     }
                     else return ["status" => 400, "content" => "Email & Password not found."];
                 }
@@ -140,17 +138,16 @@ class UserModule extends DBconnectionModule{
         else return ["status" => 400, "content" => "Email & Password not found."];
     }
 
+
     function API_createUser($data){
         try{
-            $statement = $this->connection->prepare("insert into `users` (name, email, password, address, phone) values (?, ?, ?, ?, ?)");
+            $statement = $this->connection->prepare("insert into `account_sign` (fullName, emailAddress, Password) values (?, ?, ?)");
             if($statement){
-                $statement->bind_param("sssss", $name, $email, $pass, $address, $phone);
-                $name = $data["name"];
-                $email = $data["email"];
-                $pass = $data["pass"];
-                $address = $data["address"];
-                $phone = $data["phone"];
-                if($statement->execute()) return ["status" => 200, "content" => "You are register. You can login now."];
+                $statement->bind_param("sss", $fullName, $emailAddress, $Password);
+                $fullName = $data["fullName"];
+                $emailAddress = $data["emailAddress"];
+                $Password = $data["Password"];
+                if($statement->execute()) return ["status" => 200];
                 else return ["status" => 400, "content" => $statement->error];
             }
             else{

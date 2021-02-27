@@ -5,4 +5,5 @@
     $productModule = new ProductModule();
     header('Content-Type: application/json');
     echo json_encode($productModule->API_homeScreen());
+    
 ?>

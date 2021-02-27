@@ -9,7 +9,7 @@
     </div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="nav-item <?php reqPage(""); ?>"><a href="index.php"><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a></li>
+           
             <li class="nav-item <?php reqPage("product-category-list"); reqPage("product-category-add"); reqPage("product-category-edit"); ?>"><a href="?page=product-category-list"><i class="ft-package"></i><span class="menu-title" data-i18n="">Product Category</span></a></li>
             <li class="nav-item <?php reqPage("product-list"); reqPage("product-add"); reqPage("product-edit");?>"><a href="?page=product-list"><i class="ft-tag"></i><span class="menu-title" data-i18n="">Products</span></a></li>
             <li class="nav-item <?php reqPage("hot-sale-list"); ?>"><a href="?page=hot-sale-list"><i class="la la-fire"></i><span class="menu-title" data-i18n="">Hot Sale List</span></a></li>
