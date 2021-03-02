@@ -821,16 +821,27 @@ function API_reviewFav($data){
 
     function API_cartList($data){
         $responseData = ["status" => 400, "content" => []];
+<<<<<<< HEAD
         $statement = $this->connection->prepare("select movies_favourite.id, movies_favourite.token, movies.A_name, movies.A_poster, movies.Trailer_videos, movies.Cast, movies.Director, movies.Release_date, movies.Run_time, movies.Language, movies.Overview from movies_favourite inner join movies on movies_favourite.movies_id = movies.id where movies_favourite.token=? and movies_favourite.account_id=?");
+=======
+        $statement = $this->connection->prepare("select movies_favourite.id, movies_favourite.token, movies_favourite.movies_id, movies.A_name, movies.A_poster, movies.Trailer_videos, movies.Cast, movies.Director, movies.Release_date, movies.Run_time, movies.Language, movies.Overview from movies_favourite inner join movies on movies_favourite.movies_id = movies.id where movies_favourite.token=? and movies_favourite.account_id=?");
+>>>>>>> 20e97bb7974efd32d1e63923055cf9b61aa6a73c
         if($statement){
             $statement->bind_param("ss", $otoken, $uid);
             $otoken = $data["otoken"];
             $uid = $data['uid'];
             if($statement->execute()){
+<<<<<<< HEAD
                 $statement->bind_result($id, $token, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
                 $isFound = false;
                 while($statement->fetch()){
                     $responseData["content"][] = ["id" => $id, "uid" => $uid, "token" => $token, "A_name" => $A_name, "A_poster" => $A_poster, "Trailer_videos" => $Trailer_videos,  "Cast" => $Cast, "Director" => $Director, "Release_date" => $Release_date, "Run_time" => $Run_time, "Language" => $Language, "Overview" => $Overview];
+=======
+                $statement->bind_result($id, $token, $movies_id, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
+                $isFound = false;
+                while($statement->fetch()){
+                    $responseData["content"][] = ["id" => $id, "uid" => $uid, "token" => $token, "movies_id" => $movies_id, "A_name" => $A_name, "A_poster" => $A_poster, "Trailer_videos" => $Trailer_videos,  "Cast" => $Cast, "Director" => $Director, "Release_date" => $Release_date, "Run_time" => $Run_time, "Language" => $Language, "Overview" => $Overview];
+>>>>>>> 20e97bb7974efd32d1e63923055cf9b61aa6a73c
                     $isFound = true;
                 }
                 if($isFound) $responseData["status"] = 200;
