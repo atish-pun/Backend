@@ -587,42 +587,42 @@ class ProductModule extends DBconnectionModule{
     function API_homeScreen(){
  
         {
-            $action = "select `id`, `A_name`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `action`=1 ";
+            $action = "select `id`, `A_name`, `Price`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `action`=1 ";
             $action_statement = $this->connection->prepare($action);
             if($action_statement){
                 $isFoundHSS = false;
                 $action_statement->execute();
-                $action_statement->bind_result($id,$A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
+                $action_statement->bind_result($id,$A_name, $Price, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
                 while($action_statement->fetch()){
-                    $data["Action_movies"][] = ["id" => $id, "film name" => $A_name, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
+                    $data["Action_movies"][] = ["id" => $id, "film name" => $A_name, "Price" => $Price, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
                     $isFoundHSS = true;
                 }
                 if($isFoundHSS) $data["Action_movies"];
             }
         }
         {
-            $love = "select  `id`, `A_name`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `love`=1 ";
+            $love = "select  `id`, `A_name`, `Price`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `love`=1 ";
             $love_statement = $this->connection->prepare($love);
             if($love_statement){
                 $isFoundHSS = false;
                 $love_statement->execute();
-                $love_statement->bind_result($id, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
+                $love_statement->bind_result($id, $A_name, $Price, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
                 while($love_statement->fetch()){
-                    $data["Love_movies"][] = ["id" => $id, "film name" => $A_name, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
+                    $data["Love_movies"][] = ["id" => $id, "film name" => $A_name, "Price" => $Price, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
                     $isFoundHSS = true;
                 }
                 if($isFoundHSS) $data["Love_movies"];
             }
         }
         {
-            $horror = "select  `id`, `A_name`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `horror`=1";
+            $horror = "select  `id`, `A_name`, `Price`, `A_poster`, `Trailer_videos`,`Cast`, `Director`, `Release_date`, `Run_time`,`Language`, `Overview` from `movies` where `horror`=1";
             $horror_statement = $this->connection->prepare($horror);
             if($horror_statement){
                 $isFoundHSS = false;
                 $horror_statement->execute();
-                $horror_statement->bind_result($id, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
+                $horror_statement->bind_result($id, $A_name, $Price, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
                 while($horror_statement->fetch()){
-                    $data["Horror_movies"][] = ["id" => $id, "film name" => $A_name, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
+                    $data["Horror_movies"][] = ["id" => $id, "film name" => $A_name, "Price" => $Price, "film image" => $A_poster, "trailer videos"=> $Trailer_videos,"Cast" => $Cast, "Director" => $Director, "Release_date"=> $Release_date,"Run_time" => $Run_time, "Language" => $Language, "Overview"=> $Overview];
                     $isFoundHSS = true;
                 }
                 if($isFoundHSS) $data["Horror_movies"];
@@ -750,9 +750,10 @@ class ProductModule extends DBconnectionModule{
         $Movies_id = $data["pid"];
         $Token = $data["otoken"];
         $Reviews = $data["reviews"];
-        $cart_statement = $this->connection->prepare("insert into movie_reviews (User_id, Movies_id, Token, Reviews) values (?,?,?,?)");
+        $ratedValue = $data["RatedValue"];
+        $cart_statement = $this->connection->prepare("insert into movie_reviews (User_id, Movies_id, Token, Reviews, RatedValue) values (?,?,?,?,?)");
         if($cart_statement){
-        $cart_statement->bind_param("ssss", $User_id, $Movies_id, $Token, $Reviews);
+        $cart_statement->bind_param("sssss", $User_id, $Movies_id, $Token, $Reviews, $RatedValue);
         if($cart_statement->execute()) return ["status" => 200, "content" => "Review Done."];
             return ["status" => 400, "content" => "Error . Code - 0x901"];
         }
@@ -761,15 +762,15 @@ class ProductModule extends DBconnectionModule{
     }
 
     function API_reviewList($data){
-        $statement = $this->connection->prepare("select movie_reviews.Movies_id, movie_reviews.Reviews, account_sign.fullName from movie_reviews inner join account_sign on movie_reviews.User_id = account_sign.id where movie_reviews.Movies_id=? ");
+        $statement = $this->connection->prepare("select movie_reviews.Movies_id, movie_reviews.Reviews, movie_reviews.RatedValue account_sign.fullName from movie_reviews inner join account_sign on movie_reviews.User_id = account_sign.id where movie_reviews.Movies_id=? ");
         if($statement){
             $statement->bind_param("s", $Movies_id);
             $Movies_id = $data["Movies_id"];
             if($statement->execute()){
-                $statement->bind_result($Movies_id, $Reviews, $fullName);
+                $statement->bind_result($Movies_id, $Reviews, $RatedValue, $fullName);
                 $isFound = false;
                 while($statement->fetch()){
-                    $responseData["content"][] = ["movies_id" => $Movies_id, "reviews" => $Reviews, "fullName" => $fullName];
+                    $responseData["content"][] = ["movies_id" => $Movies_id, "reviews" => $Reviews, "RatedValue" => $RatedValue, "fullName" => $fullName];
                     $isFound = true;
                 }
             }
@@ -821,51 +822,24 @@ function API_reviewFav($data){
 
     function API_cartList($data){
         $responseData = ["status" => 400, "content" => []];
-<<<<<<< HEAD
-        $statement = $this->connection->prepare("select movies_favourite.id, movies_favourite.token, movies.A_name, movies.A_poster, movies.Trailer_videos, movies.Cast, movies.Director, movies.Release_date, movies.Run_time, movies.Language, movies.Overview from movies_favourite inner join movies on movies_favourite.movies_id = movies.id where movies_favourite.token=? and movies_favourite.account_id=?");
-=======
-        $statement = $this->connection->prepare("select movies_favourite.id, movies_favourite.token, movies_favourite.movies_id, movies.A_name, movies.A_poster, movies.Trailer_videos, movies.Cast, movies.Director, movies.Release_date, movies.Run_time, movies.Language, movies.Overview from movies_favourite inner join movies on movies_favourite.movies_id = movies.id where movies_favourite.token=? and movies_favourite.account_id=?");
->>>>>>> 20e97bb7974efd32d1e63923055cf9b61aa6a73c
+        $statement = $this->connection->prepare("select movies_favourite.id, movies_favourite.token,movies_favourite.movies_id, movies.A_name, movies.Price, movies.A_poster, movies.Trailer_videos, movies.Cast, movies.Director, movies.Release_date, movies.Run_time, movies.Language, movies.Overview from movies_favourite inner join movies on movies_favourite.movies_id = movies.id where movies_favourite.token=? and movies_favourite.account_id=?");
         if($statement){
             $statement->bind_param("ss", $otoken, $uid);
             $otoken = $data["otoken"];
             $uid = $data['uid'];
-            if($statement->execute()){
-<<<<<<< HEAD
-                $statement->bind_result($id, $token, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
+            if ($statement->execute()){
+                $statement->bind_result($id, $token, $movies_id, $A_name, $Price, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
                 $isFound = false;
-                while($statement->fetch()){
-                    $responseData["content"][] = ["id" => $id, "uid" => $uid, "token" => $token, "A_name" => $A_name, "A_poster" => $A_poster, "Trailer_videos" => $Trailer_videos,  "Cast" => $Cast, "Director" => $Director, "Release_date" => $Release_date, "Run_time" => $Run_time, "Language" => $Language, "Overview" => $Overview];
-=======
-                $statement->bind_result($id, $token, $movies_id, $A_name, $A_poster, $Trailer_videos, $Cast, $Director, $Release_date, $Run_time, $Language, $Overview);
-                $isFound = false;
-                while($statement->fetch()){
-                    $responseData["content"][] = ["id" => $id, "uid" => $uid, "token" => $token, "movies_id" => $movies_id, "A_name" => $A_name, "A_poster" => $A_poster, "Trailer_videos" => $Trailer_videos,  "Cast" => $Cast, "Director" => $Director, "Release_date" => $Release_date, "Run_time" => $Run_time, "Language" => $Language, "Overview" => $Overview];
->>>>>>> 20e97bb7974efd32d1e63923055cf9b61aa6a73c
-                    $isFound = true;
-                }
-                if($isFound) $responseData["status"] = 200;
+            while($statement->fetch()){
+                $responseData["content"][] = ["id" => $id, "uid" => $uid, "token" => $token, "movies_id" => $movies_id, "A_name" => $A_name, "Price" => $Price , "A_poster" => $A_poster, "Trailer_videos" => $Trailer_videos,  "Cast" => $Cast, "Director" => $Director, "Release_date" => $Release_date, "Run_time" => $Run_time, "Language" => $Language, "Overview" => $Overview];
+                $isFound = true;
             }
+            if($isFound) $responseData["status"] = 200;
+        }
         }
         return $responseData;
     }
-
-    function API_cartCount($data){
-        //Cart Count
-        $cart_statement = $this->connection->prepare("select COUNT(token) as cart_count from `product_order` where token=? and order_status=10");
-        if($cart_statement){
-            $cart_statement->bind_param("s", $token);
-            $token = $data["token"];
-            if($cart_statement->execute()){
-                $cart_statement->bind_result($cart_count);
-                $cart_statement->fetch();
-                return ["status" => 200, "content" => $cart_count];
-            }
-            return ["status" => 400, "content" => "Error . Code - 0x1402"];
-        }
-        return ["status" => 400, "content" => "Error . Code - 0x1401"];
-    }
-
+        
     function API_checkedOut($data){
         //Checked Out
         $payment_method = $data["payment_method"];

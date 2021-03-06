@@ -5,7 +5,8 @@
     if(isset($_REQUEST['uid']) 
         && isset($_REQUEST['pid']) 
         && isset($_REQUEST['otoken'])
-        && isset($_REQUEST['reviews'])){
+        && isset($_REQUEST['reviews'])
+        && isset($_REQUEST['RatedValue'])){
         $productModule = new ProductModule();
         header('Content-Type: application/json');
         echo json_encode($productModule->API_Review($_REQUEST));
